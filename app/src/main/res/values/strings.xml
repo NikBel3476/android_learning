@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">android_learning</string>
+    <string name="input_login_label">Login</string>
+    <string name="input_password_label">Password</string>
 </resources>
