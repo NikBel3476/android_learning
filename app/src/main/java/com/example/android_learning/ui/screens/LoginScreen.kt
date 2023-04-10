@@ -33,7 +33,7 @@ fun LoginScreen() {
     }
 
     val focusManager = LocalFocusManager.current
-    val context = LocalContext.current;
+    val context = LocalContext.current
 
     val login = {
         Toast.makeText(context, "$loginValue $passwordValue", Toast.LENGTH_LONG).show()
