@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.android_learning.ui.screens.LoginScreen
+import com.example.android_learning.ui.screens.Screen
 import com.example.android_learning.ui.theme.Android_learningTheme
 
 class MainActivity : ComponentActivity() {
@@ -36,7 +36,11 @@ class MainActivity : ComponentActivity() {
 fun AppNavigation() {
     val navController = rememberNavController()
 
-    NavHost(navController, startDestination = "login") {
-        composable("login") { LoginScreen() }
+    NavHost(navController, startDestination = Screen.LoginScreen.screenName) {
+        Screen.values().map { screen ->
+            composable(screen.screenName) {
+                screen.showScreen()
+            }
+        }
     }
 }
