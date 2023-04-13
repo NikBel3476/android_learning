@@ -18,7 +18,7 @@ fun TestsScreen() {
             .fillMaxSize()
     ) {
         repeat(5) {
-            TestWidget("Тест на сообразительность", 3)
+            TestWidget("Тест на сообразительность", (1..5).random())
         }
     }
 }

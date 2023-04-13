@@ -24,7 +24,9 @@ import com.example.android_learning.ui.components.InputPassword
 import com.example.android_learning.ui.theme.Android_learningTheme
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(
+    navigate: (() -> Unit)?
+) {
     var loginValue by remember {
         mutableStateOf("")
     }
@@ -37,6 +39,8 @@ fun LoginScreen() {
 
     val login = {
         Toast.makeText(context, "$loginValue $passwordValue", Toast.LENGTH_LONG).show()
+        navigate?.invoke()
+        Unit
     }
     val handleLoginButtonClick = {
         login()
@@ -97,6 +101,6 @@ fun LoginScreen() {
 @Composable
 fun DefaultLoginScreen() {
     Android_learningTheme {
-        LoginScreen()
+        LoginScreen {}
     }
 }

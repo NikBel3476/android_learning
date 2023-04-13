@@ -39,7 +39,7 @@ fun AppNavigation() {
     NavHost(navController, startDestination = Screen.LoginScreen.screenName) {
         Screen.values().map { screen ->
             composable(screen.screenName) {
-                screen.showScreen()
+                screen.showScreen { screen.navigate?.invoke(navController) }
             }
         }
     }
