@@ -4,6 +4,8 @@ import TestWidget
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -16,8 +18,9 @@ fun TestsScreen() {
         modifier = Modifier
             .padding(8.dp)
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
     ) {
-        repeat(5) {
+        repeat(10) {
             TestWidget("Тест на сообразительность", (1..5).random())
         }
     }
