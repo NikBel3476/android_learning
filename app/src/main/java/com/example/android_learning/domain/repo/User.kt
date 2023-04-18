@@ -7,16 +7,19 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class User(
-    @PrimaryKey val uid: Int,
+    @PrimaryKey val uid: Long,
     val login: String,
     val password: String,
 ) {
     @Ignore
     val firstName: String? = null
+
     @Ignore
     val nickname: String? = null
+
     @Ignore
     val rating: Int? = null
+
     @Ignore
     val drawable: BitmapDrawable? = null
 }

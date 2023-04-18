@@ -1,4 +1,9 @@
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -10,16 +15,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.android_learning.ui.theme.Android_learningTheme
 import com.example.android_learning.R
+import com.example.android_learning.ui.components.RatingBar
+import com.example.android_learning.ui.theme.Android_learningTheme
 
 @Composable
 fun TestWidget(
     title: String,
-    score: Int,
+    rating: Int,
     modifier: Modifier = Modifier
 ) {
-    val maxScore = 5
+    val maxRating = 5
 
     Column(
         modifier = modifier
@@ -52,7 +58,7 @@ fun TestWidget(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        painter = when (score > 2) {
+                        painter = when (rating > 2) {
                             true -> painterResource(R.drawable.thumb_up_filled)
                             false -> painterResource(R.drawable.thumb_down_filled)
                         },
@@ -70,22 +76,7 @@ fun TestWidget(
                 Text(stringResource(R.string.start_test_button_text), fontSize = 20.sp)
             }
         }
-        Row {
-            repeat(score) {
-                Icon(
-                    painter = painterResource(R.drawable.grade_filled),
-                    contentDescription = "score star",
-                    modifier = Modifier.size(24.dp)
-                )
-            }
-            repeat(maxScore - score) {
-                Icon(
-                    painter = painterResource(R.drawable.grade_outlined),
-                    contentDescription = "score star",
-                    modifier = Modifier.size(24.dp)
-                )
-            }
-        }
+        RatingBar(rating = rating, maxRating = maxRating)
     }
 }
 

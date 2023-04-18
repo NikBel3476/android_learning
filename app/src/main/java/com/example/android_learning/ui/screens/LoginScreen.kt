@@ -12,19 +12,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.android_learning.R
 import com.example.android_learning.ui.components.Input
 import com.example.android_learning.ui.components.InputPassword
 import com.example.android_learning.ui.theme.Android_learningTheme
+import com.example.android_learning.viewmodels.LoginScreenViewModel
 
 @Composable
 fun LoginScreen(
+    viewModel: LoginScreenViewModel = hiltViewModel(),
     navigate: (() -> Unit)?
 ) {
     var loginValue by remember {
@@ -38,13 +42,30 @@ fun LoginScreen(
     val context = LocalContext.current
 
     val login = {
-        Toast.makeText(context, "$loginValue $passwordValue", Toast.LENGTH_LONG).show()
-        navigate?.invoke()
+        if (loginValue == "" || passwordValue == "") {
+            Toast.makeText(context, "Введите логин и пароль", Toast.LENGTH_LONG).show()
+        }
+
+        viewModel.login(loginValue, passwordValue).fold(
+            onSuccess = { navigate?.invoke() },
+            onFailure = { Toast.makeText(context, it.message, Toast.LENGTH_LONG).show() }
+        )
+
+//        val user = viewModel.login(loginValue, passwordValue).getOrElse {
+//            Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+//            null
+//        }
+//
+//        if (user != null) {
+//            navigate?.invoke()
+//        }
         Unit
     }
+
     val handleLoginButtonClick = {
         login()
     }
+
     val handleDoneAction = {
         focusManager.clearFocus()
         login()
@@ -92,7 +113,11 @@ fun LoginScreen(
                 .fillMaxWidth()
                 .padding(horizontal = 48.dp)
         ) {
-            Text("Login", fontSize = 18.sp, modifier = Modifier.padding(8.dp))
+            Text(
+                stringResource(R.string.login_button_text),
+                fontSize = 18.sp,
+                modifier = Modifier.padding(8.dp)
+            )
         }
     }
 }

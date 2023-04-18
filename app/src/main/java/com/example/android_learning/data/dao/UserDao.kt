@@ -13,10 +13,13 @@ interface UserDao {
     fun getAll(): LiveData<List<User>>
 
     @Query("SELECT * FROM user WHERE uid=:uid")
-    fun findById(uid: Int): User?
+    fun findById(uid: Long): User?
+
+    @Query("SELECT * FROM user WHERE login=:login")
+    fun findByLogin(login: String): User?
 
     @Insert
-    fun insertAll(vararg users: User)
+    fun insertAll(user: User): Long
 
     @Delete
     fun delete(user: User)

@@ -10,7 +10,7 @@ enum class Screen(
 ) {
     LoginScreen(
         "login",
-        showScreen = { navigate -> LoginScreen(navigate) },
+        showScreen = { navigate -> LoginScreen(navigate = navigate) },
         navigate = { it.navigate("tests") }),
     TestsScreen("tests", { TestsScreen() })
 }
