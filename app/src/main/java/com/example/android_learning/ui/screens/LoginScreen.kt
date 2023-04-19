@@ -42,24 +42,15 @@ fun LoginScreen(
     val context = LocalContext.current
 
     val login = {
-        if (loginValue == "" || passwordValue == "") {
-            Toast.makeText(context, "Введите логин и пароль", Toast.LENGTH_LONG).show()
+        when (loginValue == "" || passwordValue == "") {
+            true -> Toast.makeText(context, "Введите логин и пароль", Toast.LENGTH_LONG).show()
+            false -> viewModel.login(
+                loginValue,
+                passwordValue,
+                { navigate?.invoke() },
+                { Toast.makeText(context, it, Toast.LENGTH_LONG).show() }
+            )
         }
-
-        viewModel.login(loginValue, passwordValue).fold(
-            onSuccess = { navigate?.invoke() },
-            onFailure = { Toast.makeText(context, it.message, Toast.LENGTH_LONG).show() }
-        )
-
-//        val user = viewModel.login(loginValue, passwordValue).getOrElse {
-//            Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
-//            null
-//        }
-//
-//        if (user != null) {
-//            navigate?.invoke()
-//        }
-        Unit
     }
 
     val handleLoginButtonClick = {

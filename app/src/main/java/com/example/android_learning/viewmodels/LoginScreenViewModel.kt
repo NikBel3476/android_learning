@@ -17,29 +17,28 @@ class LoginScreenViewModel @Inject constructor(
 ) : ViewModel() {
     private var user: User? by mutableStateOf(null)
 
-    fun login(login: String, password: String): Result<User?> {
-        val existingUser = repository.findUserByLogin(login)
-        if (existingUser != null) {
-            return when (password == existingUser.password) {
-                true -> Result.success(existingUser)
-                false -> Result.failure(Exception("Wrong password"))
+    fun login(
+        login: String,
+        password: String,
+        onSuccess: () -> Unit,
+        onFailure: (message: String) -> Unit
+    ) {
+        viewModelScope.launch {
+            val existingUser = repository.findUserByLogin(login)
+            when (existingUser != null) {
+                true -> when (password == existingUser.password) {
+                    true -> {
+                        user = existingUser
+                        onSuccess()
+                    }
+                    false -> onFailure("Wrong password")
+                }
+                false -> {
+                    val id = repository.addUser(User(0, login, password))
+                    user = repository.findUserById(id)
+                    onSuccess()
+                }
             }
         }
-
-        return when (val id = repository.addUser(User(0, login, password))) {
-            null -> Result.failure(Exception("Failed to save user in database"))
-            else -> {
-                val user = repository.findUserById(id)
-                return Result.success(user)
-            }
-        }
-    }
-
-    fun findUserByLogin(login: String) = viewModelScope.launch {
-        user = repository.findUserByLogin(login)
-    }
-
-    fun addUser(user: User) = viewModelScope.launch {
-        repository.addUser(user)
     }
 }

@@ -6,21 +6,22 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.android_learning.domain.repo.User
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
     @Query("SELECT * FROM user")
-    fun getAll(): LiveData<List<User>>
+    fun getAll(): Flow<List<User>>
 
     @Query("SELECT * FROM user WHERE uid=:uid")
-    fun findById(uid: Long): User?
+    suspend fun findById(uid: Long): User?
 
     @Query("SELECT * FROM user WHERE login=:login")
-    fun findByLogin(login: String): User?
+    suspend fun findByLogin(login: String): User?
 
     @Insert
-    fun insertAll(user: User): Long
+    suspend fun insertAll(user: User): Long
 
     @Delete
-    fun delete(user: User)
+    suspend fun delete(user: User)
 }
