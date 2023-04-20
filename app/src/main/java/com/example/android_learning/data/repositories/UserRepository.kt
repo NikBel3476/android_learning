@@ -14,5 +14,5 @@ class UserRepository(private val userDao: UserDao) {
 
     suspend fun findUserByLogin(login: String): User? = userDao.findByLogin(login)
 
-    suspend fun addUser(newUser: User): Long = userDao.insertAll(newUser)
+    suspend fun addUser(newUser: User): Long = userDao.insert(newUser)
 }

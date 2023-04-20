@@ -1,17 +1,17 @@
 package com.example.android_learning.domain.repo
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
 data class Test(
+    @PrimaryKey(autoGenerate = true) val testId: Long,
     val name: String,
-    var isPassed: Boolean,
-    var second: Int,
-    var rating: Int,
-    var quest: ArrayList<Quest>
+    var rating: Int
 ) {
     constructor(name: String) : this(
+        testId = 0,
         name = name,
-        isPassed = false,
-        second = 0,
-        rating = 0,
-        quest = ArrayList()
+        rating = 0
     )
 }
