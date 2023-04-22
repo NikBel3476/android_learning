@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 3,
-    "identityHash": "9b7d7ed64645ed24ce06c3e9c18c1645",
+    "version": 5,
+    "identityHash": "e698ab4dc907ed06eeffd8d718de090e",
     "entities": [
       {
         "tableName": "User",
@@ -158,13 +158,20 @@
       },
       {
         "tableName": "QuestionAnswer",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`questionAnswerId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `index` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`questionAnswerId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `questionId` INTEGER NOT NULL DEFAULT 1, `index` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "questionAnswerId",
             "columnName": "questionAnswerId",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "questionId",
+            "columnName": "questionId",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "1"
           },
           {
             "fieldPath": "index",
@@ -240,7 +247,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9b7d7ed64645ed24ce06c3e9c18c1645')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e698ab4dc907ed06eeffd8d718de090e')"
     ]
   }
 }

@@ -12,14 +12,20 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TestDao {
     @Query("SELECT * FROM test")
-    fun getAll(): Flow<List<Test>>
+    suspend fun getAll(): List<Test>
 
     @Query("SELECT * FROM test WHERE testId=:id")
     suspend fun getById(id: Long): Test?
 
     @Transaction
     @Query("SELECT * FROM test WHERE testId=:id")
-    fun getTestWithQuestions(id: Long): Flow<TestWithQuestions>
+    suspend fun getTestWithQuestions(id: Long): TestWithQuestions
+
+    @Transaction
+    @Query("SELECT t.testId, t.name from UserTestCrossRef ut " +
+            "JOIN test t ON ut.testId = t.testId " +
+            "WHERE ut.userId = :userId")
+    suspend fun getUserTests(userId: Long): List<Test>
 
     @Insert
     suspend fun insert(test: Test): Long

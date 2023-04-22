@@ -7,12 +7,11 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.example.android_learning.domain.repo.User
 import com.example.android_learning.domain.repo.UserWithTests
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
     @Query("SELECT * FROM user")
-    fun getAll(): Flow<List<User>>
+    suspend fun getAll(): List<User>
 
     @Query("SELECT * FROM user WHERE userId=:id")
     suspend fun findById(id: Long): User?
@@ -22,7 +21,7 @@ interface UserDao {
 
     @Transaction
     @Query("SELECT * FROM user WHERE userId=:id")
-    fun getUserWithTests(id: Long): Flow<List<UserWithTests>>
+    suspend fun getUserWithTests(id: Long): UserWithTests
 
     @Insert
     suspend fun insert(user: User): Long
