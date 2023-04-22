@@ -22,6 +22,7 @@ import com.example.android_learning.ui.theme.Android_learningTheme
 fun TestWidget(
     title: String,
     rating: Int,
+    onButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val maxRating = 5
@@ -56,7 +57,7 @@ fun TestWidget(
                     }
                 )
             }
-            Button(onClick = { /*TODO*/ }) {
+            Button(onClick = onButtonClick) {
                 Text(stringResource(R.string.start_test_button_text), fontSize = 20.sp)
             }
         }
@@ -68,7 +69,7 @@ fun TestWidget(
 @Composable
 fun DefaultTestWidgetPassed() {
     Android_learningTheme {
-        TestWidget("Тест на сообразительность", 4)
+        TestWidget("Тест на сообразительность", 4, {})
     }
 }
 
@@ -76,6 +77,6 @@ fun DefaultTestWidgetPassed() {
 @Composable
 fun DefaultTestWidgetFailed() {
     Android_learningTheme {
-        TestWidget("Тест на сообразительность", 2)
+        TestWidget("Тест на сообразительность", 2, {})
     }
 }

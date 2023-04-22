@@ -15,7 +15,7 @@ import javax.inject.Inject
 class LoginScreenViewModel @Inject constructor(
     private val repository: UserRepository
 ) : ViewModel() {
-    private var user: User? by mutableStateOf(null)
+    var user: User? by mutableStateOf(null)
 
     fun login(
         login: String,

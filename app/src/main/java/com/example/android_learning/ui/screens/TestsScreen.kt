@@ -8,8 +8,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -19,10 +17,12 @@ import com.example.android_learning.viewmodels.TestsScreenViewModel
 
 @Composable
 fun TestsScreen(
-    viewModel: TestsScreenViewModel = hiltViewModel()
+    testsViewModel: TestsScreenViewModel = hiltViewModel(),
+    userId: Long,
+    navigateToTest: (testId: Long) -> Unit
 ) {
     LaunchedEffect(Unit) {
-        viewModel.getUserTests(1)
+        testsViewModel.getUserTests(userId)
     }
 
     Column(
@@ -31,11 +31,12 @@ fun TestsScreen(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-//        repeat(10) {
-//            TestWidget("Тест на сообразительность", (1..5).random())
-//        }
-        viewModel.tests.map {
-            TestWidget(title = it.name, rating = (1..5).random())
+        testsViewModel.tests.map {
+            TestWidget(
+                title = it.name,
+                rating = (1..5).random(),
+                onButtonClick = { navigateToTest(it.testId) }
+            )
         }
     }
 }
@@ -44,6 +45,9 @@ fun TestsScreen(
 @Composable
 fun DefaultTestsScreen() {
     Android_learningTheme {
-        TestsScreen()
+        TestsScreen(
+            userId = 1,
+            navigateToTest = {}
+        )
     }
 }

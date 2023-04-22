@@ -19,7 +19,7 @@ interface TestDao {
 
     @Transaction
     @Query("SELECT * FROM test WHERE testId=:id")
-    suspend fun getTestWithQuestions(id: Long): TestWithQuestions
+    suspend fun getTestWithQuestions(id: Long): TestWithQuestions?
 
     @Transaction
     @Query("SELECT t.testId, t.name from UserTestCrossRef ut " +
