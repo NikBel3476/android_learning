@@ -1,17 +1,20 @@
 package com.example.android_learning.domain.repo
 
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
+
+@Entity(
+    indices = [
+        Index(name = "index_Test_name", value = ["name"], unique = true)
+    ]
+)
 data class Test(
+    @PrimaryKey(autoGenerate = true) val testId: Long,
     val name: String,
-    var isPassed: Boolean,
-    var second: Int,
-    var rating: Int,
-    var quest: ArrayList<Quest>
 ) {
     constructor(name: String) : this(
-        name = name,
-        isPassed = false,
-        second = 0,
-        rating = 0,
-        quest = ArrayList()
+        testId = 0,
+        name = name
     )
 }

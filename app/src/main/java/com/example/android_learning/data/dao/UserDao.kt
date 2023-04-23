@@ -1,26 +1,30 @@
 package com.example.android_learning.data.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import com.example.android_learning.domain.repo.User
-import kotlinx.coroutines.flow.Flow
+import com.example.android_learning.domain.repo.UserWithTests
 
 @Dao
 interface UserDao {
     @Query("SELECT * FROM user")
-    fun getAll(): Flow<List<User>>
+    suspend fun getAll(): List<User>
 
-    @Query("SELECT * FROM user WHERE uid=:uid")
-    suspend fun findById(uid: Long): User?
+    @Query("SELECT * FROM user WHERE userId=:id")
+    suspend fun findById(id: Long): User?
 
     @Query("SELECT * FROM user WHERE login=:login")
     suspend fun findByLogin(login: String): User?
 
+    @Transaction
+    @Query("SELECT * FROM user WHERE userId=:id")
+    suspend fun getUserWithTests(id: Long): UserWithTests
+
     @Insert
-    suspend fun insertAll(user: User): Long
+    suspend fun insert(user: User): Long
 
     @Delete
     suspend fun delete(user: User)

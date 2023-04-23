@@ -3,9 +3,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,13 +14,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.android_learning.R
+import com.example.android_learning.ui.components.IconWithText
 import com.example.android_learning.ui.components.RatingBar
 import com.example.android_learning.ui.theme.Android_learningTheme
 
 @Composable
 fun TestWidget(
     title: String,
-    rating: Int,
+    rating: Int?,
+    onButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val maxRating = 5
@@ -40,50 +40,44 @@ fun TestWidget(
                 .fillMaxWidth()
         ) {
             Column {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.schedule_outlined),
-                        contentDescription = "time icon",
-                        modifier = Modifier.size(32.dp)
+                IconWithText(
+                    painter = painterResource(R.drawable.schedule_outlined),
+                    iconDescription = "time icon",
+                    text = stringResource(R.string.test_type)
+                )
+                when (rating == null || rating < 3) {
+                    true -> IconWithText(
+                        painter = painterResource(R.drawable.thumb_down_filled),
+                        iconDescription = "test result",
+                        text = stringResource(R.string.test_failed)
                     )
-                    Text(
-                        stringResource(R.string.test_type),
-                        fontSize = 18.sp,
-                        modifier = Modifier.padding(start = 8.dp)
-                    )
-                }
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        painter = when (rating > 2) {
-                            true -> painterResource(R.drawable.thumb_up_filled)
-                            false -> painterResource(R.drawable.thumb_down_filled)
-                        },
-                        contentDescription = "test result",
-                        modifier = Modifier.size(32.dp)
-                    )
-                    Text(
-                        stringResource(R.string.test_failed),
-                        fontSize = 18.sp,
-                        modifier = Modifier.padding(start = 8.dp)
+                    false -> IconWithText(
+                        painter = painterResource(R.drawable.thumb_up_filled),
+                        iconDescription = "test result",
+                        text = stringResource(R.string.test_passed)
                     )
                 }
             }
-            Button(onClick = { /*TODO*/ }) {
+            Button(onClick = onButtonClick) {
                 Text(stringResource(R.string.start_test_button_text), fontSize = 20.sp)
             }
         }
-        RatingBar(rating = rating, maxRating = maxRating)
+        RatingBar(rating = rating ?: 0, maxRating = maxRating)
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultTestWidget() {
+fun DefaultTestWidgetPassed() {
     Android_learningTheme {
-        TestWidget("Тест на сообразительность", 4)
+        TestWidget("Тест на сообразительность", 4, {})
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DefaultTestWidgetFailed() {
+    Android_learningTheme {
+        TestWidget("Тест на сообразительность", 2, {})
     }
 }

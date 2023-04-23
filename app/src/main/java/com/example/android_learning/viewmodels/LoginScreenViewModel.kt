@@ -15,7 +15,7 @@ import javax.inject.Inject
 class LoginScreenViewModel @Inject constructor(
     private val repository: UserRepository
 ) : ViewModel() {
-    private var user: User? by mutableStateOf(null)
+    var user: User? by mutableStateOf(null)
 
     fun login(
         login: String,
@@ -24,7 +24,7 @@ class LoginScreenViewModel @Inject constructor(
         onFailure: (message: String) -> Unit
     ) {
         viewModelScope.launch {
-            val existingUser = repository.findUserByLogin(login)
+            val existingUser = repository.getUserByLogin(login)
             when (existingUser != null) {
                 true -> when (password == existingUser.password) {
                     true -> {
@@ -35,7 +35,7 @@ class LoginScreenViewModel @Inject constructor(
                 }
                 false -> {
                     val id = repository.addUser(User(0, login, password))
-                    user = repository.findUserById(id)
+                    user = repository.getUserById(id)
                     onSuccess()
                 }
             }

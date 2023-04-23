@@ -1,11 +1,13 @@
 package com.example.android_learning.di
 
 import android.content.Context
-import androidx.room.Room
 import com.example.android_learning.data.AppDatabase
+import com.example.android_learning.data.dao.QuestionDao
+import com.example.android_learning.data.dao.TestDao
 import com.example.android_learning.data.dao.UserDao
+import com.example.android_learning.data.repositories.QuestionRepository
+import com.example.android_learning.data.repositories.TestRepository
 import com.example.android_learning.data.repositories.UserRepository
-import com.example.android_learning.utils.DATABASE_NAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,15 +21,23 @@ class AppModule {
     fun provideAppDb(
         @ApplicationContext
         context: Context
-    ) = Room.databaseBuilder(
-        context,
-        AppDatabase::class.java,
-        DATABASE_NAME
-    ).build()
+    ) = AppDatabase.getInstance(context)
 
     @Provides
     fun provideUserDao(appDb: AppDatabase) = appDb.userDao
 
     @Provides
-    fun provideUserRepository(userDao: UserDao): UserRepository = UserRepository(userDao)
+    fun provideUserRepository(userDao: UserDao) = UserRepository(userDao)
+
+    @Provides
+    fun provideTestDao(appDb: AppDatabase) = appDb.testDao
+
+    @Provides
+    fun provideTestRepository(testDao: TestDao) = TestRepository(testDao)
+
+    @Provides
+    fun provideQuestionDao(appDb: AppDatabase) = appDb.questionDao
+
+    @Provides
+    fun provideQuestionRepository(questionDao: QuestionDao) = QuestionRepository(questionDao)
 }
