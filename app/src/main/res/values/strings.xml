@@ -5,7 +5,7 @@
     <string name="start_test_button_text">Начать</string>
     <string name="test_failed">Не пройден</string>
     <string name="test_passed">Пройден</string>
-    <string name="test_type">На время</string>
+    <string name="test_type">Без огр. времени</string>
     <string name="login_button_text">Войти</string>
     <string name="finish_test_button_text">Завершить тест</string>
     <string name="test_results_button_text">К тестам</string>

@@ -173,8 +173,51 @@ import java.util.concurrent.Executors
 //    }
 //}
 
+//@Database(
+//    version = 5,
+//    entities = [
+//        User::class,
+//        Test::class,
+//        Question::class,
+//        QuestionOption::class,
+//        QuestionAnswer::class,
+//        UserTestCrossRef::class,
+//        TestQuestionCrossRef::class
+//    ],
+//    autoMigrations = [
+//        AutoMigration (
+//            from = 4,
+//            to = 5,
+//            spec = AppDatabase.AutoMigration::class
+//        )
+//    ]
+//)
+//abstract class AppDatabase : RoomDatabase() {
+//    abstract val userDao: UserDao
+//    abstract val testDao: TestDao
+//    abstract val questionDao: QuestionDao
+//
+//    class AutoMigration : AutoMigrationSpec
+//
+//    companion object {
+//        private var instance: AppDatabase? = null
+//
+//        fun getInstance(context: Context) : AppDatabase =
+//            instance ?: synchronized(this) {
+//                instance ?: buildDatabase(context).also { instance = it }
+//            }
+//
+//        private fun buildDatabase(context: Context) =
+//            Room.databaseBuilder(
+//                context,
+//                AppDatabase::class.java,
+//                DATABASE_NAME
+//            ).build()
+//    }
+//}
+
 @Database(
-    version = 5,
+    version = 6,
     entities = [
         User::class,
         Test::class,
@@ -186,8 +229,8 @@ import java.util.concurrent.Executors
     ],
     autoMigrations = [
         AutoMigration (
-            from = 4,
-            to = 5,
+            from = 5,
+            to = 6,
             spec = AppDatabase.AutoMigration::class
         )
     ]

@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.android_learning.data.repositories.QuestionRepository
 import com.example.android_learning.data.repositories.TestRepository
 import com.example.android_learning.data.repositories.UserRepository
-import com.example.android_learning.domain.repo.Test
+import com.example.android_learning.domain.repo.UserTest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,11 +19,11 @@ class TestsScreenViewModel @Inject constructor(
     private val testRepository: TestRepository,
     private val questionRepository: QuestionRepository
 ) : ViewModel() {
-    var tests: List<Test> by mutableStateOf(emptyList())
+    var tests: List<UserTest> by mutableStateOf(emptyList())
 
     fun getUserTests(userId: Long) {
         viewModelScope.launch {
-            tests = testRepository.getUserTests(userId)
+            tests = testRepository.getUserTestsWithScore(userId)
         }
     }
 }

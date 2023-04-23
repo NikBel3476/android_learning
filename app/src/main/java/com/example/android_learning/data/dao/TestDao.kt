@@ -7,7 +7,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.example.android_learning.domain.repo.Test
 import com.example.android_learning.domain.repo.TestWithQuestions
-import kotlinx.coroutines.flow.Flow
+import com.example.android_learning.domain.repo.UserTest
 
 @Dao
 interface TestDao {
@@ -27,8 +27,20 @@ interface TestDao {
             "WHERE ut.userId = :userId")
     suspend fun getUserTests(userId: Long): List<Test>
 
+    @Transaction
+    @Query("SELECT t.testId, t.name, ut.score from UserTestCrossRef ut " +
+            "JOIN test t ON ut.testId = t.testId " +
+            "WHERE ut.userId = :userId")
+    suspend fun getUserTestsWithScore(userId: Long): List<UserTest>
+
     @Insert
     suspend fun insert(test: Test): Long
+
+    @Transaction
+    @Query("UPDATE UserTestCrossRef " +
+            "SET score = :score " +
+            "WHERE userId = :userId AND testId = :testId")
+    suspend fun updateUserTestScore(userId: Long, testId: Long, score: Int)
 
     @Delete
     suspend fun delete(test: Test)

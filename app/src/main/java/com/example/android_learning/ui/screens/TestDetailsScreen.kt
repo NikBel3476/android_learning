@@ -24,28 +24,34 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.android_learning.R
 import com.example.android_learning.domain.repo.TestResults
+import com.example.android_learning.viewmodels.LoginScreenViewModel
 import com.example.android_learning.viewmodels.TestDetailsScreenViewModel
 
 @Composable
 fun TestDetailsScreen(
-    viewModel: TestDetailsScreenViewModel = hiltViewModel(),
+    testDetailsScreenViewModel: TestDetailsScreenViewModel = hiltViewModel(),
+    loginScreenViewModel: LoginScreenViewModel,
     testId: Long,
     navigateToTestResults: () -> Unit
 ) {
     val userAnswers: MutableMap<Long, List<Int>> = remember { mutableStateMapOf() }
 
     LaunchedEffect(Unit) {
-        viewModel.getQuestions(testId)
+        testDetailsScreenViewModel.getQuestions(testId)
     }
 
     fun calculateResults(): TestResults {
         var score = 0
-        viewModel.questions.forEach {testQuestion ->
+        testDetailsScreenViewModel.questions.forEach { testQuestion ->
             val answers = testQuestion.answers.map { it.index }
-            val userAnswers = userAnswers[testQuestion.question.questionId]
-            if (userAnswers == answers) {
+            val userQuestionAnswers = userAnswers[testQuestion.question.questionId]
+            if (userQuestionAnswers == answers) {
                 score++
             }
+        }
+        val user = loginScreenViewModel.user
+        if (user != null) {
+            testDetailsScreenViewModel.updateUserTestScore(user.userId, testId, score)
         }
         return TestResults(score = score, maxScore = 5, scoreToPass = 2)
     }
@@ -55,7 +61,7 @@ fun TestDetailsScreen(
     }
 
     fun onFinishTestButtonClick() {
-        viewModel.testResults = calculateResults()
+        testDetailsScreenViewModel.testResults = calculateResults()
         navigateToTestResults()
     }
 
@@ -65,7 +71,7 @@ fun TestDetailsScreen(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        viewModel.questions.mapIndexed { questionIndex, testQuestion ->
+        testDetailsScreenViewModel.questions.mapIndexed { questionIndex, testQuestion ->
             Text(
                 text = "${questionIndex + 1}. ${testQuestion.question.text}",
                 fontSize = 24.sp

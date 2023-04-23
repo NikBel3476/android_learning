@@ -21,7 +21,7 @@ import com.example.android_learning.ui.theme.Android_learningTheme
 @Composable
 fun TestWidget(
     title: String,
-    rating: Int,
+    rating: Int?,
     onButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -45,23 +45,24 @@ fun TestWidget(
                     iconDescription = "time icon",
                     text = stringResource(R.string.test_type)
                 )
-                IconWithText(
-                    painter = when (rating > 2) {
-                        true -> painterResource(R.drawable.thumb_up_filled)
-                        false -> painterResource(R.drawable.thumb_down_filled)
-                    },
-                    iconDescription = "test result",
-                    text = when (rating > 2) {
-                        true -> stringResource(R.string.test_passed)
-                        false -> stringResource(R.string.test_failed)
-                    }
-                )
+                when (rating == null || rating < 3) {
+                    true -> IconWithText(
+                        painter = painterResource(R.drawable.thumb_down_filled),
+                        iconDescription = "test result",
+                        text = stringResource(R.string.test_failed)
+                    )
+                    false -> IconWithText(
+                        painter = painterResource(R.drawable.thumb_up_filled),
+                        iconDescription = "test result",
+                        text = stringResource(R.string.test_passed)
+                    )
+                }
             }
             Button(onClick = onButtonClick) {
                 Text(stringResource(R.string.start_test_button_text), fontSize = 20.sp)
             }
         }
-        RatingBar(rating = rating, maxRating = maxRating)
+        RatingBar(rating = rating ?: 0, maxRating = maxRating)
     }
 }
 

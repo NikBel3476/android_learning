@@ -68,7 +68,8 @@ fun AppNavigation() {
             val userId = it.arguments?.getLong("userId") ?: 0
             TestsScreen(
                 userId = userId,
-                navigateToTest = { testId -> navController.navigate("tests/${testId}")}
+                navigateToTest = { testId -> navController.navigate("tests/${testId}")},
+                navigateToLoginScreen = { navController.navigate(Screen.LoginScreen.route)}
             )
         }
         composable(
@@ -79,6 +80,7 @@ fun AppNavigation() {
         ) {
             val testId = it.arguments?.getLong("testId") ?: 0
             TestDetailsScreen(
+                loginScreenViewModel = loginScreenViewModel,
                 testId = testId,
                 navigateToTestResults = { navController.navigate(Screen.TestResultsScreen.route)}
             )

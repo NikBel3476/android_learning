@@ -1,5 +1,6 @@
 package com.example.android_learning.ui.screens
 
+import BackPressHandler
 import TestWidget
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,11 +20,14 @@ import com.example.android_learning.viewmodels.TestsScreenViewModel
 fun TestsScreen(
     testsViewModel: TestsScreenViewModel = hiltViewModel(),
     userId: Long,
-    navigateToTest: (testId: Long) -> Unit
+    navigateToTest: (testId: Long) -> Unit,
+    navigateToLoginScreen: () -> Unit
 ) {
     LaunchedEffect(Unit) {
         testsViewModel.getUserTests(userId)
     }
+
+    BackPressHandler(onBackPressed = navigateToLoginScreen)
 
     Column(
         modifier = Modifier
@@ -34,7 +38,7 @@ fun TestsScreen(
         testsViewModel.tests.map {
             TestWidget(
                 title = it.name,
-                rating = (1..5).random(),
+                rating = it.score,
                 onButtonClick = { navigateToTest(it.testId) }
             )
         }
@@ -47,7 +51,8 @@ fun DefaultTestsScreen() {
     Android_learningTheme {
         TestsScreen(
             userId = 1,
-            navigateToTest = {}
+            navigateToTest = {},
+            navigateToLoginScreen = {}
         )
     }
 }

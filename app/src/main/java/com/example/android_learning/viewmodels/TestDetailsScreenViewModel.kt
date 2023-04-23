@@ -31,4 +31,10 @@ class TestDetailsScreenViewModel @Inject constructor(
             }
         }
     }
+
+    fun updateUserTestScore(userId: Long, testId: Long, score: Int) {
+        viewModelScope.launch {
+            testRepository.updateUserTestScore(userId, testId, score)
+        }
+    }
 }
