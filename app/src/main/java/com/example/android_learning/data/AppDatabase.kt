@@ -255,6 +255,8 @@ abstract class AppDatabase : RoomDatabase() {
                 context,
                 AppDatabase::class.java,
                 DATABASE_NAME
-            ).build()
+            )
+            .createFromAsset("database/android_learning_database_6.db")
+            .build()
     }
 }
